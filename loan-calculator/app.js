@@ -1,8 +1,18 @@
 // Listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function(e){
+  // Hide results
+  document.getElementById('results').style.display = 'none';
+  
+  // Show loader
+  document.getElementById('loading').style.display = 'block';
+
+  setTimeout(calculateResults, 2000);
+
+  e.preventDefault();
+});
 
 // Calculate Results
-function calculateResults(e){
+function calculateResults(){
   console.log('Calculating...');
   // UI Vars
   const amount = document.getElementById('amount');
@@ -24,32 +34,37 @@ function calculateResults(e){
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = ((monthly * calculatedPayments)-principal).toFixed(2);
+
+    // Show results
+    document.getElementById('results').style.display = 'block';
+
+    // Hide loader
+    document.getElementById('loading').style.display = 'none';
+
   } else {
     showError('Please check your numbers');
   }
-
-  e.preventDefault();
 }
 
 // Show Error
 function showError(error){
-  // create div
-  const errorDiv = document.createElement('div')
-}
+  // Hide results
+  document.getElementById('results').style.display = 'none';
+  
+  // Hide loader
+  document.getElementById('loading').style.display = 'none';
 
-// Get elements
-const card = document.querySelector('.card');
-const heading = document.querySelector('.heading');
-
-// Show Error
-function showError(error){
-  // create div
+  // Create a div
   const errorDiv = document.createElement('div');
 
-  // add class
-  errorDiv.classNAme = 'alert alert-danger';
+  // Get elements
+  const card = document.querySelector('.card');
+  const heading = document.querySelector('.heading');
 
-  // create text node and append to div
+  // Add class
+  errorDiv.className = 'alert alert-danger';
+
+  // Create text node and append to div
   errorDiv.appendChild(document.createTextNode(error));
 
   // Insert error above heading
@@ -59,7 +74,7 @@ function showError(error){
   setTimeout(clearError, 3000);
 }
 
-// clearError
+// Clear error
 function clearError(){
-  document.querySelector('.alert').remove;
+  document.querySelector('.alert').remove();
 }
